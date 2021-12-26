@@ -11,7 +11,7 @@ describe('Test endpoint responses', () => {
     expect(response.status).toBe(200);
     done();
   });
-  it('responds with 404 status when file does not exist',async (done) => {
+  it('responds with 404 status when file does not exist', async (done) => {
     const response = await request
       .get('/')
       .query({ filename: 'nature', width: '200', height: '200' });
