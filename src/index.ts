@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from 'express';
-import {resizeImage} from './sharp/index'
-import path from 'path'
-import fs from 'fs'
+import { resizeImage } from './sharp/index';
+import path from 'path';
+import fs from 'fs';
 const app: Application = express();
 
 interface QueryParams {
@@ -11,19 +11,25 @@ interface QueryParams {
 }
 
 app.get('/', async (req: Request, res: Response) => {
-  const {filename, width, height} = req.query as unknown as QueryParams;
+  const { filename, width, height } = req.query as unknown as QueryParams;
 
-  const originalImagePath = path.join(__dirname, `../imgs/original/${filename}.jpg`);
-  const processedImagePath = path.join(__dirname, `../imgs/processed/${filename}.jpg`);
+  const originalImagePath = path.join(
+    __dirname,
+    `../imgs/original/${filename}.jpg`
+  );
+  const processedImagePath = path.join(
+    __dirname,
+    `../imgs/processed/${filename}.jpg`
+  );
 
   if (!fs.existsSync(originalImagePath)) {
-    res.status(404).send("Not found")
+    res.status(404).send('Not found');
   }
 
   if (fs.existsSync(processedImagePath)) {
-    res.sendFile(processedImagePath)
+    res.sendFile(processedImagePath);
   }
-  await resizeImage(filename, +width, +height)
+  await resizeImage(filename, +width, +height);
 
   res.sendFile(processedImagePath);
 });
