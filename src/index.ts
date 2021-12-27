@@ -13,6 +13,16 @@ interface QueryParams {
 app.get('/', async (req: Request, res: Response) => {
   const { filename, width, height } = req.query as unknown as QueryParams;
 
+  if (!filename) {
+    return res.status(400).send('must provide filename');
+  }
+
+  if (!(parseInt(height) > 0))
+    return res.status(400).send('must provide valid height');
+
+  if (!(parseInt(width) > 0))
+    return res.status(400).send('must provide valid width');
+
   const originalImagePath = path.join(
     __dirname,
     `../imgs/original/${filename}.jpg`
