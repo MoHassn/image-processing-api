@@ -23,13 +23,18 @@ app.get('/', async (req: Request, res: Response) => {
   );
 
   if (!fs.existsSync(originalImagePath)) {
-    res.status(404).send('Not found');
+    return res.status(404).send('Not found');
   }
 
   if (fs.existsSync(processedImagePath)) {
-    res.sendFile(processedImagePath);
+    return res.sendFile(processedImagePath);
   }
-  await resizeImage(filename, +width, +height);
+  try {
+    await resizeImage(filename, +width, +height);
+  } catch (e) {
+    console.log('Error', e);
+    return res.status(500).send('Error ocurred while processing image');
+  }
 
   res.sendFile(processedImagePath);
 });
